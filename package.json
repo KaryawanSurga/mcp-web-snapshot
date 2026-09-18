@@ -1,0 +1,61 @@
+{
+  "name": "mcp-web-snapshot",
+  "version": "0.1.0",
+  "description": "MCP server and CLI that turn any web page into clean, readable markdown for LLM agents, capped by a token budget.",
+  "type": "module",
+  "license": "MIT",
+  "author": "KaryawanSurga",
+  "homepage": "https://github.com/KaryawanSurga/mcp-web-snapshot#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaryawanSurga/mcp-web-snapshot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KaryawanSurga/mcp-web-snapshot/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "web-scraping",
+    "markdown",
+    "readability",
+    "ai-agents",
+    "tokens",
+    "cli"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "mcp-web-snapshot": "dist/index.js",
+    "websnapshot": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@mozilla/readability": "^0.6.0",
+    "linkedom": "^0.18.13",
+    "turndown": "^7.2.4",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.3",
+    "@types/turndown": "^5.0.6",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.1"
+  }
+}
