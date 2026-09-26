@@ -1,6 +1,6 @@
 {
   "name": "mcp-web-snapshot",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP server and CLI that turn any web page into clean, readable markdown for LLM agents, capped by a token budget.",
   "type": "module",
   "license": "MIT",
