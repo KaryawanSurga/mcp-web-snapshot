@@ -69,10 +69,10 @@ From a local checkout, point `command` at `node` and `args` at the built entry p
 
 | Tool | What it returns |
 | --- | --- |
-| `snapshot` | Clean markdown of a page: title, source metadata, readable content, optional links, token count, truncation flag. |
+| `snapshot` | Clean markdown of a page: title, source metadata, readable content, optional links, token count, truncation flag, and adaptive memory recovery when enabled. |
 | `extract_links` | Deduplicated absolute links with anchor text, optionally same-origin only. |
 
-Both tools accept an optional `timeoutMs`. `snapshot` also accepts `budget`, `readability`, and `links`.
+Both tools accept an optional `timeoutMs`. `snapshot` also accepts `budget`, `readability`, `links`, and `adaptive`.
 
 ## How it works
 
@@ -83,6 +83,20 @@ Both tools accept an optional `timeoutMs`. `snapshot` also accepts `budget`, `re
 5. **Trim** to the token budget, reporting truncation explicitly.
 
 Token counts are estimated at four characters per token so the conversion stays fully offline and deterministic.
+
+## Adaptive extraction
+
+Pages get redesigned and extraction breaks. With `--adaptive`, Snapshot remembers the structure of the pages you care about and recovers the content after a redesign — no AI involved.
+
+1. The first adaptive snapshot stores a fingerprint of the content container (tag, id, classes, attributes, path, parent, and a text hash) in `~/.mcp-web-snapshot/memory.json`.
+2. Every later adaptive snapshot compares the page against the stored fingerprint.
+3. When similarity drops below the threshold (default 40%), Snapshot scores every element on the page and relocates the closest match.
+
+```sh
+npx -y mcp-web-snapshot https://docs.example.com/guide --adaptive
+```
+
+Memory is local-only, scoped per domain, and capped at 50 pages per domain. Point `--memory <path>` or `MCP_WEB_SNAPSHOT_MEMORY` at a different file for a shared or throwaway store. The technique is inspired by [Scrapling](https://github.com/D4Vinci/Scrapling)'s adaptive scraping, reimplemented for this tool.
 
 ## Design principles
 
@@ -107,6 +121,8 @@ mcp-web-snapshot serve
 | `--max-bytes <n>` | Maximum download size (default 2000000) |
 | `--links` | Append page links |
 | `--same-origin` | With `--links`, keep only same-origin links |
+| `--adaptive` | Remember page structure and recover content after redesigns |
+| `--memory <path>` | Memory file for `--adaptive` (default `~/.mcp-web-snapshot/memory.json`) |
 | `--raw` | Skip readability and keep the full page structure |
 | `--json` | Machine-readable output |
 
@@ -114,6 +130,7 @@ Exit codes: `0` success, `1` fetch or parse failure, `2` usage error.
 
 ## Roadmap
 
+- Adaptive extraction for pages without semantic containers (`article` / `main`).
 - Local response cache with TTL.
 - PDF and plain-text document handling.
 - `robots.txt` awareness and per-host rate limiting.
