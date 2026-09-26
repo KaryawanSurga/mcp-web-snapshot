@@ -18,6 +18,12 @@ export const snapshotSchema = {
     .describe("Approximate token budget for the returned markdown (default 4000)"),
   readability: z.boolean().optional().describe("Extract the main article content only (default true)"),
   links: z.boolean().optional().describe("Include the page links at the end of the output"),
+  adaptive: z
+    .boolean()
+    .optional()
+    .describe(
+      "Remember the page's content structure locally (~/.mcp-web-snapshot/memory.json) and recover the content after redesigns",
+    ),
   timeoutMs: z.number().int().positive().optional().describe("Request timeout in milliseconds (default 15000)"),
 };
 
@@ -37,11 +43,13 @@ export function buildServer(): McpServer {
       title: "Web snapshot",
       description:
         "Fetch a web page and return clean, readable markdown with navigation, ads, and scripts removed. Use it to read " +
-        "documentation, articles, and release notes without flooding the context with raw HTML. Output honors a token budget.",
+        "documentation, articles, and release notes without flooding the context with raw HTML. Output honors a token budget. " +
+        "With adaptive enabled, the page's content structure is remembered locally so later snapshots can recover the content " +
+        "after a redesign.",
       inputSchema: snapshotSchema,
       annotations: { readOnlyHint: true, openWorldHint: true },
     },
-    async ({ url, budget, readability, links, timeoutMs }) => {
+    async ({ url, budget, readability, links, adaptive, timeoutMs }) => {
       try {
         const options: Parameters<typeof snapshotUrl>[1] = {};
         if (budget !== undefined) {
@@ -52,6 +60,9 @@ export function buildServer(): McpServer {
         }
         if (links !== undefined) {
           options.includeLinks = links;
+        }
+        if (adaptive !== undefined) {
+          options.adaptive = adaptive;
         }
         if (timeoutMs !== undefined) {
           options.timeoutMs = timeoutMs;

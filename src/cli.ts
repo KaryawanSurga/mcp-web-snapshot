@@ -30,6 +30,8 @@ Options:
   --max-bytes <n>     Maximum download size in bytes (default ${DEFAULT_MAX_BYTES})
   --links             Append the page links to the output
   --same-origin       With --links, keep only same-origin links
+  --adaptive          Remember page structure and recover content after redesigns
+  --memory <path>     Memory file for --adaptive (default ~/.mcp-web-snapshot/memory.json)
   --raw               Skip readability and keep the full page structure
   --json              Machine-readable output
   -h, --help          Show this help
@@ -65,6 +67,8 @@ export async function main(argv: string[], io: CliIo): Promise<number> {
       "max-bytes": { type: "string" },
       links: { type: "boolean" },
       "same-origin": { type: "boolean" },
+      adaptive: { type: "boolean" },
+      memory: { type: "string" },
       raw: { type: "boolean" },
       json: { type: "boolean" },
       help: { type: "boolean", short: "h" },
@@ -111,6 +115,8 @@ export async function main(argv: string[], io: CliIo): Promise<number> {
       readability: values["raw"] !== true,
       includeLinks: values["links"] === true,
       sameOriginLinks: values["same-origin"] === true,
+      adaptive: values["adaptive"] === true,
+      ...(typeof values["memory"] === "string" ? { memoryPath: values["memory"] } : {}),
     };
   } catch (error) {
     io.stderr(error instanceof Error ? error.message : String(error));
