@@ -1,8 +1,8 @@
 # PRD — MCP Web Snapshot
 
-**Status:** v0.1.0 ready to ship
+**Status:** v0.2.0 ready to ship
 **Owner:** KaryawanSurga
-**Last updated:** 2026-09-19
+**Last updated:** 2026-09-26
 
 ## 1. Summary
 
@@ -58,6 +58,7 @@ MCP Web Snapshot is an MCP server and CLI that fetch a web page and return clean
 | FR7 | Only `http` and `https` URLs are accepted. |
 | FR8 | `serve` exposes both tools over MCP stdio. |
 | FR9 | Non-HTML text responses are returned as-is, trimmed only by budget. |
+| FR10 | `--adaptive` fingerprints the content container locally and recovers it via similarity scoring when a page is redesigned; memory is per-domain, capped, and never leaves the machine. |
 
 ## 8. Non-functional requirements
 
@@ -83,9 +84,10 @@ MCP Web Snapshot is an MCP server and CLI that fetch a web page and return clean
 
 ## 11. Release plan
 
-- **v0.1.0** — snapshot, extract_links, budgeting, CLI, MCP server, CI.
-- **v0.2.0** — local cache with TTL, robots-aware politeness.
-- **v0.3.0** — PDF/text documents, batch snapshots, exact tokenizer mode.
+- **v0.1.0** — snapshot, extract_links, budgeting, CLI, MCP server, CI (shipped 2026-09-19).
+- **v0.2.0** — adaptive extraction: content fingerprints, local memory, similarity-based recovery after redesigns (shipped 2026-09-20).
+- **v0.3.0** — local cache with TTL, robots-aware politeness, semantic-container detection for adaptive extraction.
+- **v0.4.0** — PDF/text documents, batch snapshots, exact tokenizer mode.
 
 ## 12. Open questions
 

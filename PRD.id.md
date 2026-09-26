@@ -1,8 +1,8 @@
 # PRD — MCP Web Snapshot (Bahasa Indonesia)
 
-**Status:** v0.1.0 siap rilis
+**Status:** v0.2.0 siap rilis
 **Owner:** KaryawanSurga
-**Update terakhir:** 2026-09-19
+**Update terakhir:** 2026-09-26
 
 ## 1. Ringkasan
 
@@ -58,6 +58,7 @@ MCP Web Snapshot adalah MCP server dan CLI yang mengambil halaman web lalu menge
 | FR7 | Hanya URL `http` dan `https` yang diterima. |
 | FR8 | `serve` mengekspos kedua tool lewat MCP stdio. |
 | FR9 | Respons teks non-HTML dikembalikan apa adanya, hanya dipangkas oleh budget. |
+| FR10 | `--adaptive` menyimpan fingerprint kontainer konten secara lokal dan memulihkannya lewat skor kemiripan saat halaman didesain ulang; memori per domain, dibatasi, dan tidak pernah keluar dari mesin. |
 
 ## 8. Kebutuhan non-fungsional
 
@@ -83,9 +84,10 @@ MCP Web Snapshot adalah MCP server dan CLI yang mengambil halaman web lalu menge
 
 ## 11. Rencana rilis
 
-- **v0.1.0** — snapshot, extract_links, budgeting, CLI, MCP server, CI.
-- **v0.2.0** — cache lokal dengan TTL, kesopanan robots-aware.
-- **v0.3.0** — dokumen PDF/teks, snapshot batch, mode tokenizer exact.
+- **v0.1.0** — snapshot, extract_links, budgeting, CLI, MCP server, CI (rilis 2026-09-19).
+- **v0.2.0** — adaptive extraction: fingerprint konten, memori lokal, pemulihan berbasis kemiripan setelah redesign (rilis 2026-09-20).
+- **v0.3.0** — cache lokal dengan TTL, kesopanan robots-aware, deteksi kontainer semantik untuk adaptive extraction.
+- **v0.4.0** — dokumen PDF/teks, snapshot batch, mode tokenizer exact.
 
 ## 12. Pertanyaan terbuka
 
